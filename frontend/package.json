@@ -13,7 +13,6 @@
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
-    "express": "^4.21.2",
     "formik": "^2.4.6",
     "frontend": "file:",
     "http-proxy-middleware": "^3.0.3",
