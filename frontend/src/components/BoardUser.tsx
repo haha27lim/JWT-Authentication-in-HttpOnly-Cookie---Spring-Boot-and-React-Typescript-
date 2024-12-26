@@ -1,30 +1,37 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
 
 const BoardUser: React.FC = () => {
   const [content, setContent] = useState<string>("");
+  const effectRan = useRef(false);
 
   useEffect(() => {
-    UserService.getUserBoard().then(
-      (response) => {
-        setContent(response.data);
-      },
-      (error) => {
-        const _content =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+    if (effectRan.current === false) {
+      UserService.getUserBoard().then(
+        (response) => {
+          setContent(response.data);
+        },
+        (error) => {
+          const _content =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
 
-        setContent(_content);
+          setContent(_content);
 
-        if (error.response && error.response.status === 401) {
-          EventBus.dispatch("logout");
+          if (error.response && error.response.status === 401) {
+            EventBus.dispatch("logout");
+          }
         }
-      }
-    );
+      );
+
+      return () => {
+        effectRan.current = true;
+      };
+    }  
   }, []);
 
   return (

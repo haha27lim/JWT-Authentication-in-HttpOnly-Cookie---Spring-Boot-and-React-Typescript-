@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/test/";
+const API_URL = "/api/test/";
 
 // Configure axios defaults
 axios.defaults.withCredentials = true;

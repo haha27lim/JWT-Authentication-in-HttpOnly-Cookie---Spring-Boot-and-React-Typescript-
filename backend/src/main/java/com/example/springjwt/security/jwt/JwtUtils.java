@@ -66,16 +66,9 @@ public class JwtUtils {
   }
 
   public boolean validateJwtToken(String authToken) {
-    if (authToken == null || authToken.trim().isEmpty()) {
-      logger.error("JWT token is empty");
-      return false;
-    }
 
     try {
-      Jwts.parserBuilder()
-          .setSigningKey(key())
-          .build()
-          .parseClaimsJws(authToken);
+      Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
       return true;
     } catch (MalformedJwtException e) {
       logger.error("Invalid JWT token: {}", e.getMessage());

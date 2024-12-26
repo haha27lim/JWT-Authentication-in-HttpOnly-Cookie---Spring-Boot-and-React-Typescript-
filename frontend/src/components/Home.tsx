@@ -1,22 +1,30 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UserService from "../services/user.service";
 
 const Home: React.FC = () => {
   const [content, setContent] = useState<string>("");
+  const effectRan = useRef(false);
 
   useEffect(() => {
-    UserService.getPublicContent().then(
-      (response) => {
-        setContent(response.data);
-      },
-      (error) => {
-        setContent(
-          (error.response && error.response.data) ||
+    if (effectRan.current === false) {
+      UserService.getPublicContent().then(
+        (response) => {
+          setContent(response.data);
+        },
+        (error) => {
+          const _content =
+            (error.response && error.response.data) ||
             error.message ||
-            error.toString()
-        );
-      }
-    );
+            error.toString();
+
+          setContent(_content);
+        }
+      );
+
+      return () => {
+        effectRan.current = true;
+      };
+    }
   }, []);
 
   return (
